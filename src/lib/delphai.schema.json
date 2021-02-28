@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://delphai.com/project.schema.json",
+  "title": "delphai project",
+  "description": "delphai.yml schema",
+  "type": "object",
+  "properties": {
+    "template": {
+      "description": "delphai template to use to create the project",
+      "type": "string"
+    }
+  },
+  "required": [
+    "template"
+  ]
+}

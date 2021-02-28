@@ -20,7 +20,7 @@ export default class Ctx extends Command {
       await execute(`az account set --subscription ${parsed.args.context}`, {
         text: `changing azure context to ${parsed.args.context}`,
       })
-      await execute(`kubectx delphai-${parsed.flags.cluster || parsed.args.contextparsed.args.context}`, {
+      await execute(`kubectx delphai-${parsed.flags.cluster || parsed.args.context}`, {
         text: `changing kubernetes context to ${parsed.flags.cluster || parsed.args.context}`,
       })
     } else {

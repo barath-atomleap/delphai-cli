@@ -19,7 +19,7 @@ $ npm install -g @delphai/cli
 $ delphai COMMAND
 running command...
 $ delphai (-v|--version|version)
-@delphai/cli/0.0.0 linux-x64 node-v14.15.5
+@delphai/cli/0.0.0 linux-x64 node-v12.20.1
 $ delphai --help [COMMAND]
 USAGE
   $ delphai COMMAND
@@ -30,6 +30,7 @@ USAGE
 <!-- commands -->
 * [`delphai ctx [CONTEXT]`](#delphai-ctx-context)
 * [`delphai help [COMMAND]`](#delphai-help-command)
+* [`delphai init TEMPLATE`](#delphai-init-template)
 * [`delphai secrets`](#delphai-secrets)
 
 ## `delphai ctx [CONTEXT]`
@@ -62,6 +63,17 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `delphai init TEMPLATE`
+
+create a new project
+
+```
+USAGE
+  $ delphai init TEMPLATE
+```
+
+_See code: [build/commands/init.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/init.ts)_
 
 ## `delphai secrets`
 
