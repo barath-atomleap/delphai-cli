@@ -1,0 +1,24 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "test",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "jest --detectOpenHandles"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [],
+			"label": "npm: start",
+			"detail": "env NODE_ENV=development ts-node-dev --respawn --no-notify src/index.ts | bunyan -o short",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

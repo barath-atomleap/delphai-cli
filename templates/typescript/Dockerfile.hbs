@@ -1,0 +1,20 @@
+FROM node:10.13.0-alpine
+ARG SSH_PRIVATE_KEY
+ARG GITHUB_TOKEN
+WORKDIR /app
+RUN apk add curl openssh-client
+RUN curl -sSL https://github.com/stormcat24/protodep/releases/download/0.0.8/protodep_linux_amd64.tar.gz > protodep_linux_amd64.tar.gz
+RUN tar -xf protodep_linux_amd64.tar.gz && mv protodep /usr/local/bin/
+COPY package.json yarn.lock protodep.toml protodep.lock /app/
+RUN mkdir -p /root/.ssh
+RUN printf "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}\n@delphai:registry=https://npm.pkg.github.com" > /root/.npmrc
+RUN cat /root/.npmrc
+RUN echo "${SSH_PRIVATE_KEY}" | base64 -d > /root/.ssh/id_rsa
+RUN touch /root/.ssh/known_hosts
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN yarn install --frozen-lockfile
+RUN yarn codegen:dep
+COPY . /app
+RUN yarn build
+
+ENTRYPOINT [ "node", "--max-old-space-size=2046", "--no-deprecation", "build/index.js" ]

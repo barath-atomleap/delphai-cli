@@ -22,6 +22,7 @@ const generators = (plop: NodePlopAPI) => {
       name: 'features',
       choices: schema.properties.features.items.enum,
       default: [],
+      when: (answers: any) => answers.language === 'python',
     },
   ]
   plop.setHelper('ifIn', (elem, list, options) => {
@@ -55,7 +56,10 @@ const generators = (plop: NodePlopAPI) => {
     prompts,
     actions: [
       (answers: any) => {
-        if (answers.features.includes('grpc_server') || answers.features.includes('grpc_client')) {
+        if (
+          answers.features &&
+          (answers.features.includes('grpc_server') || answers.features.includes('grpc_client'))
+        ) {
           answers.features.push('grpc')
         }
         return ''
@@ -81,8 +85,12 @@ const generators = (plop: NodePlopAPI) => {
         globOptions: {
           dot: true,
         },
-        skip: (answers) => {
-          return !answers.features.includes('grpc_server')
+        skip: (answers: any) => {
+          const shouldSkip =
+            answers.language !== 'python' || !answers.features.includes('grpc_server')
+          if (shouldSkip) {
+            return 'not python or no grpc'
+          }
         },
       },
       async () => {
@@ -91,21 +99,44 @@ const generators = (plop: NodePlopAPI) => {
         }
         return ''
       },
-      async () => {
+      async (answers: any) => {
         const cwd = plop.getDestBasePath()
-        const initialized = await fs.pathExists(`${cwd}/.venv`)
-        return await execute(`poetry ${initialized ? 'update' : 'install'}`, {
-          cwd,
-          verbose: true,
-        })
+        switch (answers.language) {
+          case 'python':
+            const initialized = await fs.pathExists(`${cwd}/.venv`)
+            return await execute(`poetry ${initialized ? 'update' : 'install'}`, {
+              cwd,
+              verbose: true,
+            })
+          case 'typescript':
+            return await execute(['yarn install', 'yarn lint'], {
+              cwd,
+              verbose: true,
+            })
+          default:
+            return ''
+        }
       },
       async (answers: any) => {
-        if (answers.features.includes('grpc')) {
+        if (answers.features && answers.features.includes('grpc')) {
           const cwd = plop.getDestBasePath()
-          await execute(['protodep up --force', 'poetry run poe codegen'], {
-            cwd,
-            text: 'running codegen',
-          })
+          let codegenCommand: string | undefined
+          switch (answers.language) {
+            case 'python':
+              codegenCommand = 'poetry run poe codegen'
+              break
+            case 'typescript':
+              codegenCommand = 'yarn codegen'
+              break
+            default:
+              break
+          }
+          if (codegenCommand) {
+            await execute(['protodep up --force', codegenCommand], {
+              cwd,
+              text: 'running codegen',
+            })
+          }
         }
         return ''
       },

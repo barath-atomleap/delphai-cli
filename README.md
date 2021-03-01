@@ -19,7 +19,7 @@ $ npm install -g @delphai/cli
 $ delphai COMMAND
 running command...
 $ delphai (-v|--version|version)
-@delphai/cli/0.0.0 linux-x64 node-v12.20.1
+@delphai/cli/0.0.0 linux-x64 node-v14.15.5
 $ delphai --help [COMMAND]
 USAGE
   $ delphai COMMAND
