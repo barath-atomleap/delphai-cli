@@ -1,0 +1,24 @@
+import sys
+from typing import List
+
+from pytest_snapshot.plugin import Snapshot
+sys.path.append('./src')
+sys.path.append('./src/proto')
+
+import asyncio
+import pytest
+from google.protobuf.json_format import MessageToDict
+import yaml
+
+
+def process_snapshot(file_name: str, snapshot: Snapshot, result):
+  snapshot.snapshot_dir = f'snapshots'
+  snapshot.assert_match(yaml.dump(result, default_flow_style=False, allow_unicode=True),f'{file_name}.yml')
+
+
+@pytest.yield_fixture(scope='session')
+def event_loop(request):
+  """Create an instance of the default event loop for each test case."""
+  loop = asyncio.get_event_loop()
+  yield loop
+  loop.close()

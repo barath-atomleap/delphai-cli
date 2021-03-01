@@ -29,9 +29,9 @@ USAGE
 # Commands
 <!-- commands -->
 * [`delphai ctx [CONTEXT]`](#delphai-ctx-context)
-* [`delphai help [COMMAND]`](#delphai-help-command)
-* [`delphai init TEMPLATE`](#delphai-init-template)
+* [`delphai init TEMPLATE PROJECT`](#delphai-init-template-project)
 * [`delphai secrets`](#delphai-secrets)
+* [`delphai sync`](#delphai-sync)
 
 ## `delphai ctx [CONTEXT]`
 
@@ -47,30 +47,13 @@ OPTIONS
 
 _See code: [build/commands/ctx.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/ctx.ts)_
 
-## `delphai help [COMMAND]`
-
-display help for delphai
-
-```
-USAGE
-  $ delphai help [COMMAND]
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
-```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
-
-## `delphai init TEMPLATE`
+## `delphai init TEMPLATE PROJECT`
 
 create a new project
 
 ```
 USAGE
-  $ delphai init TEMPLATE
+  $ delphai init TEMPLATE PROJECT
 ```
 
 _See code: [build/commands/init.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/init.ts)_
@@ -88,4 +71,18 @@ OPTIONS
 ```
 
 _See code: [build/commands/secrets.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/secrets.ts)_
+
+## `delphai sync`
+
+sync the project with the latest template
+
+```
+USAGE
+  $ delphai sync
+
+OPTIONS
+  -d, --cwd=cwd  [default: /home/barath/Development/projects/skunkworks/delphai-cli] working directory
+```
+
+_See code: [build/commands/sync.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/sync.ts)_
 <!-- commandsstop -->

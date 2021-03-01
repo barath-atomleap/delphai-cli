@@ -5,12 +5,34 @@
   "description": "delphai.yml schema",
   "type": "object",
   "properties": {
-    "template": {
-      "description": "delphai template to use to create the project",
+    "project": {
+      "description": "project name",
       "type": "string"
+    },
+    "language": {
+      "description": "delphai template to use to create the project",
+      "type": "string",
+      "default": "python",
+      "enum": [
+        "python"
+      ]
+    },
+    "features": {
+      "description": "additional features",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "grpc_server",
+          "grpc_client",
+          "database",
+          "elasticsearch"
+        ]
+      }
     }
   },
   "required": [
+    "project",
     "template"
   ]
 }
