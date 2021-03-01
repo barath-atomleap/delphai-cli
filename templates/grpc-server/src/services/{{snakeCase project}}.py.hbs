@@ -1,0 +1,17 @@
+from grpc import ServicerContext
+import proto.{{snakeCase project}}_pb2 as service_pb2
+import proto.{{snakeCase project}}_pb2_grpc as service_pb2_grpc
+from delphai_utils.validation import validate
+from grpc.aio import AioRpcError
+from grpc import StatusCode
+
+
+class {{pascalCase project}}(service_pb2_grpc.{{pascalCase project}}):
+  async def greet(self, request: service_pb2.GreetRequest, context: ServicerContext) -> service_pb2.GreetResponse:
+    await validate(service_pb2.GreetRequest, request, context)
+    try:
+      return service_pb2.GreetResponse(message=f'hello {request.name}')
+    except AioRpcError as ex:
+      await context.abort(ex.code(), ex.details())
+    except Exception as ex:
+      await context.abort(StatusCode.INTERNAL, str(ex))

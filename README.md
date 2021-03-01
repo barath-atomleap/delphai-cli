@@ -29,7 +29,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`delphai ctx [CONTEXT]`](#delphai-ctx-context)
-* [`delphai init TEMPLATE PROJECT`](#delphai-init-template-project)
+* [`delphai init PROJECT`](#delphai-init-project)
 * [`delphai secrets`](#delphai-secrets)
 * [`delphai sync`](#delphai-sync)
 
@@ -47,13 +47,16 @@ OPTIONS
 
 _See code: [build/commands/ctx.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/ctx.ts)_
 
-## `delphai init TEMPLATE PROJECT`
+## `delphai init PROJECT`
 
 create a new project
 
 ```
 USAGE
-  $ delphai init TEMPLATE PROJECT
+  $ delphai init PROJECT
+
+OPTIONS
+  -l, --language=python|typescript|react  project language
 ```
 
 _See code: [build/commands/init.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/init.ts)_

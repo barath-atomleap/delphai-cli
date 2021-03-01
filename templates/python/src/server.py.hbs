@@ -1,3 +1,20 @@
+{{#ifIn "grpc_server" features}}
+import sys
+sys.path.append('./src/proto')
+
+from delphai_utils.grpc_server import create_grpc_server, start_server
+import proto.{{snakeCase ../project}}_pb2 as service_pb2
+import proto.{{snakeCase ../project}}_pb2_grpc as service_pb2_grpc
+from delphai_utils import validation
+from services.{{snakeCase ../project}} import {{pascalCase ../project}}
+
+if __name__ == "__main__":
+  server = create_grpc_server(service_pb2.DESCRIPTOR)
+  service_pb2_grpc.add_{{pascalCase ../project}}Servicer_to_server({{pascalCase ../project}}(), server=server)
+  start_server(server)
+{{/ifIn}}
+{{#ifNotIn "grpc_server" features}}
 from delphai_utils.logging import logging
 if __name__ == "__main__":
-  logging.info('hello {{project}}')
+  logging.info('hello {{../project}}')
+{{/ifNotIn}}

@@ -1,4 +1,3 @@
-
 import { Command, flags } from '@oclif/command'
 import { execute } from '../lib/run-command'
 import ora from 'ora'
@@ -11,8 +10,8 @@ export default class Ctx extends Command {
     cluster: flags.string({
       char: 'c',
       description: 'kubernetes cluster to connect to',
-      required: false
-    })
+      required: false,
+    }),
   }
   async run() {
     const parsed = this.parse(Ctx)
@@ -26,16 +25,11 @@ export default class Ctx extends Command {
     } else {
       const azureContext = JSON.parse(await execute(`az account show`))
       ora(`azure context is ${azureContext.name}`).succeed()
-      const kubeContext = (await execute('kubectx --current', {})).replace(
-        'delphai-',
-        ''
-      )
+      const kubeContext = (await execute('kubectx --current', {})).replace('delphai-', '')
       ora(`kubernetes context is ${kubeContext}`).succeed()
 
       const spinner = ora('getting available contexts').start()
-      const subscriptions: { name: string }[] = JSON.parse(
-        await execute('az account list --all')
-      )
+      const subscriptions: { name: string }[] = JSON.parse(await execute('az account list --all'))
       spinner.info(`found ${subscriptions.length} contexts`)
       subscriptions.forEach((sub) => {
         const icon = sub.name === azureContext.name ? '🟨' : '🔵'

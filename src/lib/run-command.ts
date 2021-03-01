@@ -25,7 +25,7 @@ export const execute = async (
         {
           async: true,
           silent: true,
-          cwd
+          cwd,
         },
         (code, stdout, stderr) => {
           if (code === 0) {
@@ -48,9 +48,7 @@ export const execute = async (
             .map((line) => line.trim())
             .filter((line) => line.length > 0)
           lines.forEach((line) => {
-            spinner.info(
-              `${options.prefix ? `[${options.prefix}] ` : ''}${line.trim()}`
-            )
+            spinner.info(`${options.prefix ? `[${options.prefix}] ` : ''}${line.trim()}`)
           })
         }
       })
@@ -61,14 +59,11 @@ export const execute = async (
             .map((errline) => errline.trim())
             .filter((line) => line.length > 0)
           lines.forEach((line) => {
-            spinner.warn(
-              `${options.prefix ? `[${options.prefix}] ` : ''}${line.trim()}`
-            )
+            spinner.warn(`${options.prefix ? `[${options.prefix}] ` : ''}${line.trim()}`)
           })
         }
       })
-    }
-    else {
+    } else {
       let commands = command
       if (!Array.isArray(command)) {
         commands = [command]

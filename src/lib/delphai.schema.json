@@ -14,7 +14,9 @@
       "type": "string",
       "default": "python",
       "enum": [
-        "python"
+        "python",
+        "typescript",
+        "react"
       ]
     },
     "features": {

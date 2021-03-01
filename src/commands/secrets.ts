@@ -16,16 +16,13 @@ export default class Secrets extends Command {
   async run() {
     const parsed = this.parse(Secrets)
     const secrets: { items: any[] } = JSON.parse(
-      await execute(
-        `kubectl get secrets --namespace ${parsed.flags.namespace} --output json`,
-        {
-          text: `listing secrets in the ${parsed.flags.namespace} namespace`,
-        }
-      )
+      await execute(`kubectl get secrets --namespace ${parsed.flags.namespace} --output json`, {
+        text: `listing secrets in the ${parsed.flags.namespace} namespace`,
+      })
     )
     const table = new Table({
       head: ['Key', 'Value'],
-      colWidths: [50, (process.stdout.columns as number) - 53]
+      colWidths: [50, (process.stdout.columns as number) - 53],
     })
     secrets.items.forEach((secret) => {
       const name = secret.metadata.name

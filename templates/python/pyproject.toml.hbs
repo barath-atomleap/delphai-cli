@@ -6,7 +6,7 @@ authors = ["delphai <admin@delphai.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-delphai-utils = {extras = ["config"], version = "^0.2.0"}
+delphai-utils = {extras = ["config"{{#each features}},"{{this}}"{{/each}}], version = "^0.3.0"}
 
 [tool.poetry.dev-dependencies]
 yapf = "^0.30.0"
@@ -17,11 +17,25 @@ pytest = "^6.2.2"
 pytest-sugar = "^0.9.4"
 pytest-asyncio = "^0.14.0"
 pytest-snapshot = "^0.5.0"
-
+{{#ifIn "grpc" features}}
+grpcio-tools = "^1.32.0"
+mypy = "^0.800"
+mypy-protobuf = "^2.4"
+{{/ifIn}}
 
 [tool.poe.tasks]
 start = "python src/server.py"
 test = "pytest"
+{{#ifIn "grpc" features}}
+codegen = [
+  {cmd = "mkdir -p ./src"},
+  {cmd = "protodep up"},
+  {{#ifIn "grpc_server" ../features}}
+  {cmd = "python -m grpc_tools.protoc -I./.vendor -I. --mypy_out=./src --grpc_python_out=./src --python_out=./src ./proto/*.proto"}, 
+  {{/ifIn}}
+  {cmd = "python -m grpc_tools.protoc -I./.vendor -I. --mypy_out=./src/proto --grpc_python_out=./src/proto --python_out=./src/proto ./.vendor/**/*.proto"}
+]
+{{/ifIn}}
 
 [tool.pytest.ini_options]
 addopts = "-p no:warnings"
