@@ -22,7 +22,6 @@ const generators = (plop: NodePlopAPI) => {
       name: 'features',
       choices: schema.properties.features.items.enum,
       default: [],
-      when: (answers: any) => answers.language === 'python',
     },
   ]
   plop.setHelper('ifIn', (elem, list, options) => {
