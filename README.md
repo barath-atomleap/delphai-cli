@@ -19,7 +19,7 @@ $ npm install -g @delphai/cli
 $ delphai COMMAND
 running command...
 $ delphai (-v|--version|version)
-@delphai/cli/0.0.0 linux-x64 node-v14.15.5
+@delphai/cli/0.0.0 linux-x64 node-v12.19.0
 $ delphai --help [COMMAND]
 USAGE
   $ delphai COMMAND
@@ -56,7 +56,7 @@ USAGE
   $ delphai init PROJECT
 
 OPTIONS
-  -l, --language=python|typescript|react  project language
+  -l, --language=python|typescript|react  (required) project language
 ```
 
 _See code: [build/commands/init.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/init.ts)_
@@ -84,7 +84,7 @@ USAGE
   $ delphai sync
 
 OPTIONS
-  -d, --cwd=cwd  [default: /home/barath/Development/projects/skunkworks/delphai-cli] working directory
+  -d, --cwd=cwd  [default: /home/nicklas/Code/delphai/tools/delphai-cli-new] working directory
 ```
 
 _See code: [build/commands/sync.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/sync.ts)_

@@ -20,7 +20,9 @@ const generators = (plop: NodePlopAPI) => {
     {
       type: 'checkbox',
       name: 'features',
-      choices: schema.properties.features.items.enum,
+      choices: schema.allOf.find(
+        (languageFeatures) => languageFeatures.if.properties.language.const === 'python'
+      )!.then.properties.features.items.enum,
       default: [],
     },
   ]

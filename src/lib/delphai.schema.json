@@ -13,28 +13,44 @@
       "description": "delphai template to use to create the project",
       "type": "string",
       "default": "python",
-      "enum": [
-        "python",
-        "typescript",
-        "react"
-      ]
-    },
-    "features": {
-      "description": "additional features",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "grpc_server",
-          "grpc_client",
-          "database",
-          "elasticsearch"
-        ]
-      }
+      "enum": ["python", "typescript", "react"]
     }
   },
-  "required": [
-    "project",
-    "template"
-  ]
+  "allOf": [
+    {
+      "if": {
+        "properties": { "language": { "const": "python" } }
+      },
+      "then": {
+        "properties": {
+          "features": {
+            "description": "additional features",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["grpc_server", "grpc_client", "database", "elasticsearch"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "language": { "const": "react" } }
+      },
+      "then": {
+        "properties": {
+          "features": {
+            "description": "additional features",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": []
+            }
+          }
+        }
+      }
+    }
+  ],
+  "required": ["project", "template"]
 }

@@ -24,7 +24,7 @@ export const execute = async (
         finalCommand,
         {
           async: true,
-          silent: true,
+          silent: !options.verbose,
           cwd,
         },
         (code, stdout, stderr) => {

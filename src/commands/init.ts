@@ -16,29 +16,33 @@ export default class Init extends Command {
       name: 'language',
       description: 'project language',
       options: schema.properties.language.enum,
+      required: true,
     }),
   }
   async run() {
     const parsed = this.parse(Init)
-    const langString = parsed.flags.language ? ` ${parsed.flags.language}` : ''
-    const spinner = ora(`generating a new${langString} project`).start()
+    const langString = parsed.flags.language
+    const spinner = ora(`generating a new ${langString} project`).start()
     const exists = await fs.pathExists(parsed.args.project)
     if (exists) {
       spinner.fail(`directory ${parsed.args.project} already exists`)
     } else {
       await fs.mkdirs(parsed.args.project)
       spinner.succeed()
-      const plopfilPath = path.resolve(`${__dirname}/../plopfile.js`)
+      const plopfilPath = path.resolve(`${__dirname}/../plopfile-${langString}.js`)
       const command = `${plopBin} init --dest ${path.resolve(
         parsed.args.project
-      )} --plopfile ${plopfilPath} ${parsed.args.project}${langString}`
+      )} --plopfile ${plopfilPath} -- --project ${parsed.args.project} ${
+        langString !== 'react' ? `--language ${langString}` : ''
+      }`
       await execute(command, {
         verbose: true,
         text: 'generated template',
         interactive: true,
       })
 
-      await Sync.run(['--cwd', path.resolve(`${process.cwd()}/${parsed.args.project}`)])
+      if (langString !== 'react')
+        await Sync.run(['--cwd', path.resolve(`${process.cwd()}/${parsed.args.project}`)])
     }
   }
 }
