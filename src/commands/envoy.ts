@@ -54,7 +54,7 @@ export default class Envoy extends Command {
     const template = await fs.readFile(`${templatesPath}/envoy.yaml.hbs`, 'utf-8')
     const compiled = handlebars.compile(template)
     const rendered = compiled({ services })
-    await fs.writeFile('./envoy.rendered.yaml', rendered)
+    await fs.writeFile('./envoy.yaml', rendered)
     spinner.succeed('generated envoy.yaml')
   }
 }
