@@ -19,7 +19,7 @@ $ npm install -g @delphai/cli
 $ delphai COMMAND
 running command...
 $ delphai (-v|--version|version)
-@delphai/cli/0.0.0 linux-x64 node-v14.15.5
+@delphai/cli/0.0.0 linux-x64 node-v10.24.0
 $ delphai --help [COMMAND]
 USAGE
   $ delphai COMMAND
@@ -29,6 +29,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`delphai ctx [CONTEXT]`](#delphai-ctx-context)
+* [`delphai envoy`](#delphai-envoy)
 * [`delphai init PROJECT`](#delphai-init-project)
 * [`delphai secrets`](#delphai-secrets)
 * [`delphai sync`](#delphai-sync)
@@ -46,6 +47,17 @@ OPTIONS
 ```
 
 _See code: [build/commands/ctx.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/ctx.ts)_
+
+## `delphai envoy`
+
+generate envoy config for grpc-web
+
+```
+USAGE
+  $ delphai envoy
+```
+
+_See code: [build/commands/envoy.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/envoy.ts)_
 
 ## `delphai init PROJECT`
 
