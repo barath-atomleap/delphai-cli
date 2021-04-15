@@ -1,0 +1,16 @@
+FROM node:12 as build
+ARG DELPHAI_ENVIRONMENT
+ARG GITHUB_TOKEN
+WORKDIR /app
+RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc
+RUN echo "@delphai:registry=https://npm.pkg.github.com" >> .npmrc
+COPY package.json yarn.lock /app/
+RUN yarn install --frozen-lockfile
+RUN rm -f .npmrc
+COPY . /app
+RUN env DELPHAI_ENVIRONMENT=${DELPHAI_ENVIRONMENT} yarn build
+
+FROM caddy:alpine
+COPY --from=build /app/build /app
+COPY Caddyfile /etc/caddy/Caddyfile
+RUN cat /etc/caddy/Caddyfile

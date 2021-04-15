@@ -1,0 +1,41 @@
+# delphai react app
+
+delphai react frontend repository.
+
+# Setup
+- Prerequisite - Node.js
+   - [Debian and Ubuntu based](https://github.com/nodesource/distributions/blob/master/README.md#debinstall)
+   - [Mac and windows](https://nodejs.org/en/download)
+
+To run the app:
+1. Install dependency using below command
+
+```
+yarn
+```
+
+2. Run the following command to start the app
+```
+yarn start
+```
+
+3. For testing this repository uses [jest](https://jestjs.io/) with [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro). To test, run:
+```
+yarn test
+```
+you can also run jest in watch mode with
+```
+yarn test --watch
+```
+to update the snapshots run
+```
+yarn test -u
+```
+
+# Module resolution
+
+For refering to `src/` you can use `@/`. So if you have a file located at `src/foo.tsx` you can use
+
+```typescript
+import foo from '@/foo'
+```

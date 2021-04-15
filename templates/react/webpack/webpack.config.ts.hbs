@@ -1,0 +1,134 @@
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import ForkTsCheckerNotifierWebpackPlugin from 'fork-ts-checker-notifier-webpack-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import path from 'path'
+import webpack, { Configuration } from 'webpack'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+
+if (!process.env.DELPHAI_ENVIRONMENT) {
+  console.warn('\n`DELPHAI_ENVIRONMENT` not set. Using `production`.\n')
+  process.env.DELPHAI_ENVIRONMENT = 'production'
+} else {
+  console.warn(
+    `\nUsing 'DELPHAI_ENVIRONMENT' in ${process.env.DELPHAI_ENVIRONMENT}\n`
+  )
+}
+
+const isDevelopment = process.env.DELPHAI_ENVIRONMENT === 'development'
+
+module.exports = {
+  entry: path.join(__dirname, '/src/index.tsx'),
+  output: {
+    filename: 'app.js',
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
+  },
+  plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      eslint: {
+        enabled: true,
+        files: 'src/**/*.ts?(x)',
+      },
+    }),
+    new ForkTsCheckerNotifierWebpackPlugin({
+      title: 'delphai-ui errors/warnings',
+      skipSuccessful: true,
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      favicon: './src/assets/favicon.ico',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        DELPHAI_ENVIRONMENT: JSON.stringify(process.env.DELPHAI_ENVIRONMENT),
+      },
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      reportFilename: '../report.html',
+    }),
+    isDevelopment && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
+  devServer: {
+    port: 3000,
+    historyApiFallback: true,
+    host: 'localhost',
+    hot: true,
+  },
+  devtool: isDevelopment ? 'inline-source-map' : undefined,
+  module: {
+    rules: [
+      {
+        test: /\.(j|t)sx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            babelrc: false,
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  /*
+                    For development fast compilation with newest features.
+                    Production uses the browserlist as create-react-app uses it:
+                    https://github.com/facebook/create-react-app/blob/96ba7bddc1600d6f5dac9da2418ee69793c22eca/packages/react-scripts/package.json#L82-L94
+                  */
+                  targets: isDevelopment
+                    ? { browsers: 'last 2 versions' }
+                    : ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 11'],
+                },
+              ],
+              '@babel/preset-typescript',
+              ['@babel/preset-react', { runtime: 'automatic' }],
+            ],
+            plugins: [
+              ['@babel/plugin-transform-runtime'],
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              ['@babel/plugin-proposal-class-properties', { loose: true }],
+              '@babel/plugin-proposal-optional-chaining',
+              isDevelopment && 'react-refresh/babel',
+            ].filter(Boolean),
+          },
+        },
+      },
+      {
+        test: /\.css/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-react-loader',
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      '@': path.resolve(__dirname, 'src/'),
+    },
+  },
+} as Configuration

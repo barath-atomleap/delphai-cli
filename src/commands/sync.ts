@@ -14,13 +14,17 @@ export default class Init extends Command {
   }
   async run() {
     const parsed = this.parse(Init)
-    const plopfilPath = path.resolve(`${__dirname}/../plopfile.js`)
     const config = await fs.readJSON(`${path.resolve(parsed.flags.cwd)}/delphai.json`)
+    const plopfilPath = path.resolve(`${__dirname}/../plopfile-${config.language}.js`)
     const featuresString =
-      config.features && config.features.length > 0 ? ` ${config.features.join(',')}` : ''
+      config.features && config.features.length > 0 ? `${config.features.join(',')}` : ''
     const command = `${plopBin} sync --dest ${path.resolve(
       parsed.flags.cwd
-    )} --plopfile ${plopfilPath} ${config.project} ${config.language}${featuresString}`
+    )} --plopfile ${plopfilPath} -- --project ${config.project} ${
+      config.language !== 'react'
+        ? `--language ${config.language} --features ${featuresString}`
+        : ''
+    }`
     await execute(command, {
       verbose: true,
       text: 'generated template',
