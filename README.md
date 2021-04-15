@@ -19,7 +19,7 @@ $ npm install -g @delphai/cli
 $ delphai COMMAND
 running command...
 $ delphai (-v|--version|version)
-@delphai/cli/0.0.0 linux-x64 node-v10.24.0
+@delphai/cli/0.0.0 linux-x64 node-v14.15.5
 $ delphai --help [COMMAND]
 USAGE
   $ delphai COMMAND
@@ -96,7 +96,7 @@ USAGE
   $ delphai sync
 
 OPTIONS
-  -d, --cwd=cwd  [default: /home/nicklas/Code/delphai/tools/delphai-cli-new] working directory
+  -d, --cwd=cwd  [default: /home/barath/Development/projects/delphai/delphai-cli] working directory
 ```
 
 _See code: [build/commands/sync.ts](https://github.com/delphai/delphai-cli/blob/v0.0.0/build/commands/sync.ts)_
